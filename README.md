@@ -61,15 +61,7 @@ From "Where do I stay?" to "I'm settled." — in one app.
 ---
 
 ## Getting Started
-
-### Option 1: Use Lovable (Recommended)
-Edit via natural language prompts:  
-[Open HostelHub in Lovable](https://lovable.dev/projects/c52bb136-e96a-42aa-90fd-6aeefae74e7d)  
-Changes auto-commit to GitHub.
-
----
-
-### Option 2: Local Development
+: Local Development
 
 ```bash
 # 1. Clone the repo
@@ -78,3 +70,5 @@ cd hostelhub
 
 # 2. Install dependencies
 npm install
+
+#3 NOW TYPE- npm run dev
