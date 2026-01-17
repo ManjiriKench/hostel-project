@@ -1,74 +1,140 @@
-# HostelHub – Smart Accommodation & Local Services Platform
+AI-Powered Smart Accommodation & Local Service Finder
 
-**Find verified hostels, PGs, and nearby essential services — all in one place.**
+📌 Project Overview:
+Finding a suitable hostel or PG in a new city can be overwhelming due to scattered information, unreliable reviews, and a lack of insights about nearby essential services. This personal project aims to develop an AI-powered web platform that assists users in making more informed and intelligent accommodation decisions.
+The platform combines intelligent recommendations, review sentiment analysis, and a clean user interface to provide verified hostel/PG information along with nearby local services such as mess, grocery, and laundry.
 
----
+🎯 Problem Statement:
+Hostel and PG information is spread across multiple platforms.
+Reviews are often unreliable or misleading.
+New students struggle to evaluate accommodation quality and nearby services.
+Existing solutions lack personalization and intelligence.
 
-## Overview
+💡 Solution Overview:
+This project provides a centralized, AI-driven solution that:
+Displays structured and verified accommodation listings.
+Uses AI to analyze reviews and recommend suitable options.
+Helps users discover nearby essential services.
+Focuses on clarity, trust, and ease of use.
 
-**HostelHub** is an intelligent digital platform designed to simplify the search for verified hostels, PG accommodations, and essential nearby services. It empowers students and professionals relocating to new cities with:
+🚀 Key Features:
 
-- Trustworthy listings  
-- Genuine, anonymous reviews  
-- Location-based service mapping  
+User Features
+Secure user authentication
+Search hostels/PGs based on location, budget, and amenities
+View detailed accommodation profiles
+AI-based personalized recommendations
+Review and rating system
+Discovery of nearby local services
 
-Making city transitions seamless, safe, and stress-free.
+AI Features
+Sentiment analysis on user reviews
+Recommendation engine based on similarity and preferences
+Detection of suspicious or low-quality reviews
 
----
+Admin Capabilities
+Manage listings and reviews
+Monitor application activity
+Maintain platform quality
 
-## Problem Statement
+🧑‍🤝‍🧑 Team & Roles:
+Member	Role	Responsibilities
+Priyanka Data Coordinator:	Project coordination, data preparation, documentation
+Anish AI Engineer:	AI model development and integration
+Mehwish	Frontend Developer: UI/UX design and frontend implementation
+Manjiri Backend Developer:	API development, authentication, database & AI integration
 
-> "I just moved to a new city — where do I stay, and how do I survive the first month?"
+🏗️ System Architecture
+Frontend (HTML + Tailwind + JavaScript)
+        |
+        v
+Backend (Flask REST APIs)
+        |
+        v
+Database (MongoDB / Firebase)
+        |
+        v
+AI Services (Sentiment Analysis & Recommendation Engine)
 
-Students and professionals face:
+Technology Stack
+Frontend
+HTML, CSS, JavaScript
+Tailwind CSS
+Axios / Fetch API
 
-- Scattered, unverified hostel/PG listings  
-- Fake reviews and outdated photos  
-- No way to find nearby grocery, mess, laundry, or shops  
-- Wasted time, uncertainty, and poor living experiences  
+Backend
+Python
+Flask
+REST APIs
+JWT Authentication
 
-There is no centralized platform that solves both accommodation and local survival.
+AI
+Python
+NLP & Machine Learning libraries
 
----
+Database
+MongoDB / Firebase
 
-## Solution
+Deployment
+Railway / Render / Cloud-based services
 
-**HostelHub** is the all-in-one platform that:
+📂 Project Structure
+project-root/
+│
+├── backend/
+│   ├── app.py
+│   ├── routes/
+│   ├── auth/
+│   ├── models/
+│
+├── ai/
+│   ├── sentiment_analysis.ipynb
+│   ├── recommendation_engine.ipynb
+│   ├── models/
+│
+├── frontend/
+│   ├── index.html
+│   ├── search.html
+│   ├── accommodation.html
+│   ├── assets/
+│
+├── docs/
+│   ├── architecture_diagram.png
+│
+└── README.md
 
-| Feature | Benefit |
-|-------|--------|
-| Verified Listings | Only approved hostels with real photos and details |
-| Anonymous Reviews | Genuine feedback, no fake ratings |
-| Smart Search | Filter by budget, gender, amenities, location |
-| Interactive Map | See hostels + nearby services in one view |
-| Service Directory | Trusted local vendors (grocery, mess, laundry) |
-| Save & Compare | Shortlist and decide with confidence |
+⚙️ Setup & Installation
+1️⃣ Clone Repository
+git clone <repository-url>
+cd project-root
 
-From "Where do I stay?" to "I'm settled." — in one app.
+2️⃣ Backend Setup
+cd backend
+pip install -r requirements.txt
+python app.py
 
----
+3️⃣ AI Models
+Open Jupyter Notebook
+Run sentiment analysis and recommendation notebooks
+Save trained models in /ai/models
 
-## Tech Stack
+4️⃣ Frontend
+Open index.html in browser
+Or connect to deployed backend APIs
 
-| Technology | Purpose |
-|----------|--------|
-| Vite | Blazing-fast dev server and builds |
-| React + TypeScript | Type-safe, reusable components |
-| Tailwind CSS | Rapid, responsive, beautiful UI |
-| shadcn/ui | Accessible, customizable components |
-| Mapbox / Leaflet (planned) | Interactive location intelligence |
+🧠 AI Workflow
+User submits a review
+Sentiment analysis evaluates review polarity
+Review quality checks are applied
+Recommendation engine ranks suitable accommodations
+Results are returned to the user interface
 
----
+🔮 Future Enhancements
+Map-based accommodation discovery
+Advanced ML-based fake review detection
 
-## Getting Started
-: Local Development
+User preference learning
 
-```bash
-# 1. Clone the repo
-git clone <YOUR_GIT_URL>
-cd hostelhub
+Mobile application support
 
-# 2. Install dependencies
-npm install
-
-#3 NOW TYPE- npm run dev
+Real-time availability tracking
