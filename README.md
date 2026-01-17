@@ -1,140 +1,256 @@
 AI-Powered Smart Accommodation & Local Service Finder
+📌 Project Overview
 
-📌 Project Overview:
-Finding a suitable hostel or PG in a new city can be overwhelming due to scattered information, unreliable reviews, and a lack of insights about nearby essential services. This personal project aims to develop an AI-powered web platform that assists users in making more informed and intelligent accommodation decisions.
-The platform combines intelligent recommendations, review sentiment analysis, and a clean user interface to provide verified hostel/PG information along with nearby local services such as mess, grocery, and laundry.
+Finding a suitable hostel or PG in a new city is often confusing due to scattered information, unreliable listings, and lack of clarity about nearby essential services. This personal project focuses on building an AI-powered, location-aware web platform that helps users discover relevant accommodations and nearby facilities using open geographic data and intelligent backend processing.
 
-🎯 Problem Statement:
-Hostel and PG information is spread across multiple platforms.
-Reviews are often unreliable or misleading.
-New students struggle to evaluate accommodation quality and nearby services.
-Existing solutions lack personalization and intelligence.
+The system combines:
 
-💡 Solution Overview:
-This project provides a centralized, AI-driven solution that:
-Displays structured and verified accommodation listings.
-Uses AI to analyze reviews and recommend suitable options.
-Helps users discover nearby essential services.
-Focuses on clarity, trust, and ease of use.
+OpenStreetMap-based spatial data
 
-🚀 Key Features:
+Fast, scalable backend APIs
 
-User Features
-Secure user authentication
-Search hostels/PGs based on location, budget, and amenities
-View detailed accommodation profiles
-AI-based personalized recommendations
-Review and rating system
-Discovery of nearby local services
+AI-driven insights
 
-AI Features
-Sentiment analysis on user reviews
-Recommendation engine based on similarity and preferences
-Detection of suspicious or low-quality reviews
+Clean and intuitive frontend
 
-Admin Capabilities
-Manage listings and reviews
-Monitor application activity
-Maintain platform quality
+to deliver accurate, trustworthy, and user-friendly accommodation discovery.
 
-🧑‍🤝‍🧑 Team & Roles:
+🎯 Problem Statement
+
+Hostel and PG listings are fragmented across multiple platforms.
+
+Distance to essential services (food, grocery, laundry) is rarely quantified accurately.
+
+Existing platforms rely heavily on paid APIs or frontend-heavy calculations.
+
+Users lack intelligent ranking based on real-world proximity and context.
+
+💡 Solution Overview
+
+This project introduces a hostel-centric, backend-driven discovery system that:
+
+Uses OpenStreetMap (OSM) as an open and reliable data source.
+
+Performs all spatial calculations at the database level for accuracy and scalability.
+
+Exposes clean REST APIs that frontend clients can consume directly.
+
+Lays the foundation for AI-based recommendations and review intelligence.
+
+🚀 Key Features
+👤 User Features
+
+Search hostels/PGs by city
+
+View nearby essential services (food, grocery, laundry, etc.)
+
+Hostel ranking based on surrounding facilities
+
+Clean, map-friendly UI
+
+Responsive and user-friendly design
+
+🧠 Intelligence Layer
+
+Proximity-based hostel ranking
+
+Backend-driven distance calculations
+
+Foundation for AI-based recommendation logic
+
+Extendable to sentiment analysis and review intelligence
+
+🛠️ Backend Capabilities
+
+OpenStreetMap data ingestion
+
+Spatial indexing and querying using PostGIS
+
+FastAPI-based REST endpoints
+
+Scalable and deployment-ready architecture
+
+🧑‍🤝‍🧑 Team & Roles
 Member	Role	Responsibilities
-Priyanka Data Coordinator:	Project coordination, data preparation, documentation
-Anish AI Engineer:	AI model development and integration
-Mehwish	Frontend Developer: UI/UX design and frontend implementation
-Manjiri Backend Developer:	API development, authentication, database & AI integration
-
-🏗️ System Architecture
-Frontend (HTML + Tailwind + JavaScript)
+Priyanka	Team Lead & Coordination	Planning, coordination, documentation, progress tracking
+Anish	AI Engineer	Recommendation logic, AI model experimentation
+Mehwish	Frontend Developer	UI/UX design, frontend implementation, API integration
+Manjiri	Backend Developer	Data ingestion, spatial DB, APIs, system architecture
+🏗️ System Architecture & Data Flow
+OpenStreetMap (OSM)
         |
         v
-Backend (Flask REST APIs)
+Overpass API
         |
         v
-Database (MongoDB / Firebase)
+PostgreSQL + PostGIS
+(Spatial Indexing & Distance Queries)
         |
         v
-AI Services (Sentiment Analysis & Recommendation Engine)
+FastAPI Backend
+        |
+        v
+Frontend (Web UI + Maps)
 
-Technology Stack
-Frontend
-HTML, CSS, JavaScript
-Tailwind CSS
-Axios / Fetch API
+🗺️ Backend Architecture (Detailed)
+1️⃣ Data Source – OpenStreetMap (OSM)
 
-Backend
-Python
-Flask
-REST APIs
-JWT Authentication
+OpenStreetMap is used instead of paid map services.
 
-AI
-Python
-NLP & Machine Learning libraries
+Hostel/PGs and nearby facilities are fetched via Overpass API.
 
-Database
-MongoDB / Firebase
+Data is filtered by:
 
-Deployment
-Railway / Render / Cloud-based services
+City
 
-📂 Project Structure
+Place category (hostels, food, grocery, laundry, etc.)
+
+2️⃣ Data Ingestion & Storage
+
+Data is ingested into PostgreSQL with PostGIS extension.
+
+Each entity stores:
+
+Unique OSM ID
+
+Name (if available)
+
+Location as geography(Point, 4326)
+
+GiST spatial indexes are created for efficient queries.
+
+3️⃣ Spatial Processing & Distance Calculation
+
+All distance calculations are performed inside the database using PostGIS:
+
+ST_Distance
+
+Spatial joins and filtering
+
+This enables:
+
+Accurate real-world distance measurement
+
+Hostel ranking based on nearby services
+
+Reduced frontend computation
+
+4️⃣ Backend APIs (FastAPI)
+
+The backend exposes REST APIs for:
+
+Fetching hostels by city
+
+Fetching nearby facilities for a hostel
+
+Hostel-centric ranking based on surrounding amenities
+
+The APIs are designed to be frontend-ready, requiring minimal client-side processing.
+
+5️⃣ Repository Structure
 project-root/
 │
 ├── backend/
-│   ├── app.py
-│   ├── routes/
-│   ├── auth/
-│   ├── models/
-│
-├── ai/
-│   ├── sentiment_analysis.ipynb
-│   ├── recommendation_engine.ipynb
-│   ├── models/
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── api/
+│   │   ├── db/
+│   │   ├── services/
+│   │   └── models/
+│   ├── ingestion/
+│   │   └── osm_ingest.py
+│   └── requirements.txt
 │
 ├── frontend/
 │   ├── index.html
 │   ├── search.html
-│   ├── accommodation.html
+│   ├── hostel.html
 │   ├── assets/
 │
 ├── docs/
-│   ├── architecture_diagram.png
+│   └── architecture_diagram.png
 │
 └── README.md
 
-⚙️ Setup & Installation
-1️⃣ Clone Repository
+🧪 Technology Stack
+Frontend
+
+HTML, CSS, JavaScript
+
+Tailwind CSS
+
+Fetch / Axios
+
+Backend
+
+Python
+
+FastAPI
+
+PostgreSQL
+
+PostGIS
+
+Overpass API (OSM)
+
+AI (Planned / In Progress)
+
+Python
+
+Recommendation logic
+
+NLP-based extensions
+
+Deployment
+
+Cloud-based backend hosting
+
+Database hosted with PostGIS support
+
+⚙️ Setup & Installation (Backend)
+# Clone repository
 git clone <repository-url>
 cd project-root
 
-2️⃣ Backend Setup
+# Backend setup
 cd backend
 pip install -r requirements.txt
-python app.py
+uvicorn app.main:app --reload
 
-3️⃣ AI Models
-Open Jupyter Notebook
-Run sentiment analysis and recommendation notebooks
-Save trained models in /ai/models
 
-4️⃣ Frontend
-Open index.html in browser
-Or connect to deployed backend APIs
+Frontend can be served statically or connected to deployed APIs.
 
-🧠 AI Workflow
-User submits a review
-Sentiment analysis evaluates review polarity
-Review quality checks are applied
-Recommendation engine ranks suitable accommodations
-Results are returned to the user interface
+🔧 Current Project Status
+
+✔ OpenStreetMap data ingestion complete
+✔ PostgreSQL + PostGIS spatial database ready
+✔ Distance-based ranking logic implemented
+✔ FastAPI endpoints tested and stable
+⏳ Frontend–backend integration in progress
 
 🔮 Future Enhancements
-Map-based accommodation discovery
-Advanced ML-based fake review detection
 
-User preference learning
+Interactive map visualization
 
-Mobile application support
+User preference-based recommendations
 
-Real-time availability tracking
+Review sentiment analysis
+
+Mobile-first UI
+
+Advanced AI-based ranking models
+
+📄 Disclaimer
+
+This is a personal learning and development project focused on real-world backend systems, spatial databases, and applied AI concepts.
+The project uses open geographic data and is intended for educational and experimental purposes.
+
+🙌 Acknowledgements
+
+OpenStreetMap contributors
+
+PostGIS and FastAPI communities
+
+Open-source tools and documentation
+
+Team collaboration and peer learning
