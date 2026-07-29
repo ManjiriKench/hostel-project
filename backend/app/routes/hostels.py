@@ -15,16 +15,28 @@ def list_hostels(
     # If no location is provided, return all hostels (limited)
     if lat is None or lon is None:
         query = text("""
-            SELECT id, name
+            SELECT id, name,
+                   ST_Y(location::geometry) AS lat,
+                   ST_X(location::geometry) AS lon
             FROM hostels
             LIMIT 50;
         """)
         result = db.execute(query).fetchall()
-        return [{"id": r.id, "name": r.name} for r in result]
+        return [
+            {
+                "id": r.id,
+                "name": r.name,
+                "lat": r.lat,
+                "lon": r.lon,
+                "distance_m": 0
+            } for r in result
+        ]
 
     # Geo-aware query
     query = text("""
         SELECT id, name,
+               ST_Y(location::geometry) AS lat,
+               ST_X(location::geometry) AS lon,
                ST_Distance(
                  location,
                  ST_MakePoint(:lon, :lat)::geography
@@ -48,7 +60,35 @@ def list_hostels(
         {
             "id": r.id,
             "name": r.name,
+            "lat": r.lat,
+            "lon": r.lon,
             "distance_m": round(r.distance_m)
         }
         for r in result
     ]
+
+@router.get("/search")
+def search_hostels(
+    q: str = Query(..., min_length=1, description="Search keyword"),
+    db: Session = Depends(get_db)
+):
+    query = text("""
+        SELECT id, name,
+               ST_Y(location::geometry) AS lat,
+               ST_X(location::geometry) AS lon
+        FROM hostels
+        WHERE name ILIKE :search
+        LIMIT 20;
+    """)
+    result = db.execute(query, {"search": f"%{q}%"}).fetchall()
+    return [
+        {
+            "id": r.id,
+            "name": r.name,
+            "lat": r.lat,
+            "lon": r.lon,
+            "distance_m": 0
+        }
+        for r in result
+    ]
+
