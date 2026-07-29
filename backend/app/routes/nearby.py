@@ -11,10 +11,12 @@ def nearby_services(
     radius: int = Query(1000, description="Search radius in meters"),
     db: Session = Depends(get_db)
 ):
-    # 1. Fetch hostel location
+    # 1. Fetch hostel location & coordinates
     hostel = db.execute(
         text("""
-            SELECT id, name, location
+            SELECT id, name, location,
+                   ST_Y(location::geometry) AS lat,
+                   ST_X(location::geometry) AS lon
             FROM hostels
             WHERE id = :id
         """),
@@ -27,7 +29,9 @@ def nearby_services(
     response = {
         "hostel": {
             "id": hostel.id,
-            "name": hostel.name
+            "name": hostel.name,
+            "lat": hostel.lat,
+            "lon": hostel.lon
         },
         "nearby": {
             "grocery": [],
@@ -36,11 +40,13 @@ def nearby_services(
         }
     }
 
-    # 2. Query facilities per category
+    # 2. Query facilities per category with coordinates
     for category in ["grocery", "food", "laundry"]:
         rows = db.execute(
             text("""
-                SELECT id, name,
+                SELECT id, name, category,
+                       ST_Y(location::geometry) AS lat,
+                       ST_X(location::geometry) AS lon,
                        ST_Distance(
                            location,
                            :hostel_loc
@@ -66,9 +72,13 @@ def nearby_services(
             {
                 "id": r.id,
                 "name": r.name,
+                "category": r.category,
+                "lat": r.lat,
+                "lon": r.lon,
                 "distance_m": round(r.distance_m)
             }
             for r in rows
         ]
 
     return response
+
