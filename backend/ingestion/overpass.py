@@ -1,12 +1,13 @@
+import sys
 import requests
 from sqlalchemy import text
 from app.db import engine
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 
-QUERY = """
+QUERY_TEMPLATE = """
 [out:json][timeout:25];
-area["name"="Pune"]["boundary"="administrative"]->.searchArea;
+area["name"="{city}"]["boundary"="administrative"]->.searchArea;
 (
   node["tourism"="hostel"](area.searchArea);
   way["tourism"="hostel"](area.searchArea);
@@ -14,18 +15,17 @@ area["name"="Pune"]["boundary"="administrative"]->.searchArea;
 out center tags;
 """
 
-def fetch_osm_data():
-    print("🌍 Fetching hostel data for Pune from OSM...")
-    response = requests.post(OVERPASS_URL, data=QUERY)
+def fetch_osm_data(city: str = "Pune"):
+    print(f"🌍 Fetching hostel data for {city} from OSM...")
+    query = QUERY_TEMPLATE.format(city=city)
+    response = requests.post(OVERPASS_URL, data=query)
     response.raise_for_status()
     data = response.json()
-    print(f"✅ Received {len(data['elements'])} elements")
-    return data["elements"]
+    elements = data.get("elements", [])
+    print(f"✅ Received {len(elements)} elements")
+    return elements
 
 def extract_point(el):
-    """
-    Returns (lat, lon) for node or way
-    """
     if el["type"] == "node":
         return el["lat"], el["lon"]
     elif el["type"] == "way" and "center" in el:
@@ -68,8 +68,10 @@ def insert_hostels(elements):
     print(f"🏁 Done. Inserted: {inserted}, Skipped: {skipped}")
 
 def main():
-    elements = fetch_osm_data()
+    city = sys.argv[1] if len(sys.argv) > 1 else "Pune"
+    elements = fetch_osm_data(city)
     insert_hostels(elements)
 
 if __name__ == "__main__":
     main()
+

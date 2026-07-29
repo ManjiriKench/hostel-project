@@ -1,3 +1,4 @@
+import sys
 import requests
 from sqlalchemy import text
 from app.db import engine
@@ -26,19 +27,22 @@ CATEGORIES = {
 
 BASE_QUERY = """
 [out:json][timeout:30];
-area["name"="Pune"]["boundary"="administrative"]->.searchArea;
+area["name"="{city}"]["boundary"="administrative"]->.searchArea;
 (
 {filters}
 );
 out center tags;
 """
 
-def fetch(category, filters):
-    query = BASE_QUERY.format(filters="\n".join(f + "(area.searchArea);" for f in filters))
+def fetch(category, filters, city="Pune"):
+    query = BASE_QUERY.format(
+        city=city,
+        filters="\n".join(f + "(area.searchArea);" for f in filters)
+    )
     response = requests.post(OVERPASS_URL, data=query)
     response.raise_for_status()
-    data = response.json()["elements"]
-    print(f"✅ {category}: fetched {len(data)} elements")
+    data = response.json().get("elements", [])
+    print(f"✅ {category}: fetched {len(data)} elements for {city}")
     return data
 
 def extract_point(el):
@@ -77,9 +81,11 @@ def insert(category, elements):
     print(f"🏁 {category}: inserted {inserted}")
 
 def main():
+    city = sys.argv[1] if len(sys.argv) > 1 else "Pune"
     for category, filters in CATEGORIES.items():
-        elements = fetch(category, filters)
+        elements = fetch(category, filters, city)
         insert(category, elements)
 
 if __name__ == "__main__":
     main()
+
